@@ -46,6 +46,7 @@ let
 
   isValidLogin = login: login.username != null && login.passwordFile != null && login.registry != null;
   podmanComposePath = name : ".config/podman-compose/${name}/docker-compose.yml" ;
+  podmanComposeDir = name : ".config/podman-compose/${name}" ;
   podmanComposeEnvPath = name : ".config/podman-compose/${name}/.env" ;
 
   mkService = name: compose: let
@@ -72,7 +73,7 @@ let
         "DOCKER_HOST=unix://%t/podman/podman.sock"
         "\"PATH=${env_path}\""
       ];
-      WorkingDirectory= "%h/${podmanComposePath(escapedName)}";
+      WorkingDirectory= "%h/${podmanComposeDir(escapedName)}";
       
       TimeoutStartSec = 300;
       TimeoutStopSec = 30;
