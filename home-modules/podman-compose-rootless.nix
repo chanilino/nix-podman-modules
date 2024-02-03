@@ -65,7 +65,6 @@ let
     };
     Install = {
       WantedBy = [] ++ optional (compose.autoStart) "default.target";
-      After= [ "podman.socket" ];
     };
     Service = {
       Environment= [ 
