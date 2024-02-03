@@ -72,6 +72,8 @@ let
         "DOCKER_HOST=unix://%t/podman/podman.sock"
         "\"PATH=${env_path}\""
       ];
+      WorkingDirectory= "$HOME/${podmanComposePath(escapedName)}";
+      
       TimeoutStartSec = 300;
       TimeoutStopSec = 30;
       Restart = "on-failure";
