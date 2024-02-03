@@ -78,12 +78,12 @@ let
       
       ExecStart = concatStringsSep " \\\n  " ([
         "/bin/sh --login -c '"
-     	    "docker-compose -f $HOME/${podmanComposePath(escapedName)}  --project-name ${escapedName} up --abort-on-container-exit --remove-orphans" 
+     	    "podman-compose -f $HOME/${podmanComposePath(escapedName)}  --project-name ${escapedName} up --abort-on-container-exit --remove-orphans" 
         "'" 
       ]);
       ExecStop = concatStringsSep " \\\n  " ([
         "/bin/sh --login -c '"
-     	    "docker-compose -f $HOME/${podmanComposePath(escapedName)} --project-name ${escapedName} down -t 10 --remove-orphans" 
+     	    "podman-compose -f $HOME/${podmanComposePath(escapedName)} --project-name ${escapedName} down -t 10 --remove-orphans" 
         "'" 
       ]);
       Type="simple";
