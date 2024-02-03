@@ -2,7 +2,7 @@
 
 with lib;
 let
-  cfg = config.virtualisation.podman-compose-rootless;
+  cfg = config.virtualisation.docker-podman-compose-rootless;
   composeOptions =
     { ... }: {
       options = {
