@@ -271,6 +271,7 @@ let
     script = concatStringsSep " \\\n  " ([
       "exec ${cfg.backend} run"
       "--rm"
+      "--init"
       "--name=${escapedName}"
       "--log-driver=${container.log-driver}"
     ] ++ optional (container.entrypoint != null)

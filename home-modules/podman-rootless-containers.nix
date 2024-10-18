@@ -248,6 +248,7 @@ let
       ExecStart = concatStringsSep " \\\n  " ([
         "/bin/sh --login -c '"
             "podman run"
+               "--init"
                "--cidfile=%t/%n.ctr-id"
                "--cgroups=no-conmon" 
                "--sdnotify=conmon"
