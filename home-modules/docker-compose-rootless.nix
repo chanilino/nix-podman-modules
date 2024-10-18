@@ -69,8 +69,8 @@ let
     env_path = lib.makeBinPath ( with pkgs; [
       coreutils findutils gnugrep gnused systemd util-linux podman docker-compose 
     ]) + ":/run/current-system/sw/bin";
-    abortOnContainerExit = mkIf(compose.abortOnContainerExit) "--abort-on-container-exit";
-   pullOnUp = mkIf (compose.pullOnUp) "--pull";
+    abortOnContainerExit = if compose.abortOnContainerExit then  "--abort-on-container-exit" else "";
+   pullOnUp = if compose.pullOnUp then "--pull" else "";
   in {
     Unit = {
       Description = "podman-compose systemd service: ${name}";
