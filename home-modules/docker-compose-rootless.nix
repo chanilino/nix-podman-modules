@@ -23,6 +23,20 @@ let
         #    ]
         #'';
         #};
+        abortOnContainerExit = mkOption {
+          type = types.bool;
+          default = true;
+          description = lib.mdDoc ''
+            When enabled, the compose add --abort-on-container-exit option to docker-compose.
+          '';
+        };
+        pullOnUp = mkOption {
+          type = types.bool;
+          default = false;
+          description = lib.mdDoc ''
+            When enabled, the compose add --pull option to docker-compose.
+          '';
+        };
         autoStart = mkOption {
           type = types.bool;
           default = true;
@@ -44,10 +58,10 @@ let
     };
   };
 
-  isValidLogin = login: login.username != null && login.passwordFile != null && login.registry != null;
+  #isValidLogin = login: login.username != null && login.passwordFile != null && login.registry != null;
   podmanComposePath = name : ".config/podman-compose/${name}/docker-compose.yml" ;
-  podmanComposeDir = name : ".config/podman-compose/${name}" ;
-  podmanComposeEnvPath = name : ".config/podman-compose/${name}/.env" ;
+  #podmanComposeDir = name : ".config/podman-compose/${name}" ;
+  #podmanComposeEnvPath = name : ".config/podman-compose/${name}/.env" ;
 
   mkService = name: compose: let
     dependsOn = map (x: "podman-${x}.service") compose.dependsOn;
@@ -55,6 +69,8 @@ let
     env_path = lib.makeBinPath ( with pkgs; [
       coreutils findutils gnugrep gnused systemd util-linux podman docker-compose 
     ]) + ":/run/current-system/sw/bin";
+    abortOnContainerExit = mkIf(compose.abortOnContainerExit) "--abort-on-container-exit";
+   pullOnUp = mkIf (compose.pullOnUp) "--pull";
   in {
     Unit = {
       Description = "podman-compose systemd service: ${name}";
@@ -81,7 +97,7 @@ let
       
       ExecStart = concatStringsSep " \\\n  " ([
         "/bin/sh --login -c '"
-     	    "docker-compose -f $HOME/${podmanComposePath(escapedName)}  --project-name ${escapedName} up --abort-on-container-exit --remove-orphans" 
+     	    "docker-compose -f $HOME/${podmanComposePath(escapedName)}  --project-name ${escapedName} up ${pullOnUp} ${abortOnContainerExit}  --remove-orphans" 
         "'" 
       ]);
       ExecStop = concatStringsSep " \\\n  " ([
