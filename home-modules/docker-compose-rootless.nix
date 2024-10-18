@@ -70,7 +70,7 @@ let
       coreutils findutils gnugrep gnused systemd util-linux podman docker-compose 
     ]) + ":/run/current-system/sw/bin";
     abortOnContainerExit = if compose.abortOnContainerExit then  "--abort-on-container-exit" else "";
-   pullOnUp = if compose.pullOnUp then "--pull" else "";
+    pullOnUp = if compose.pullOnUp then "--pull always" else "";
   in {
     Unit = {
       Description = "podman-compose systemd service: ${name}";
